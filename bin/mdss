@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+require 'optparse'
+
+options = {:name => nil}
+
+parser = OptionParser.new do |opts|
+    opts.banner = "Usage: mdss [options]"
+
+    opts.on("-i", "--init <NAME>", "Create a new simple static site with GFM") do |name|
+        options[:name] = name
+    end
+
+    opts.on("-l", "--launch", "Compile and upload to the big wide world") do
+        puts "Unsupported behavior! Terminating!"
+        exit
+    end
+
+    opts.on("-h", "--help", "Display help menu") do
+        puts opts
+        exit
+    end
+end
+
+parser.parse!
+
+if options[:name].nil?
+    puts "Whelp, no name"
+    exit
+end

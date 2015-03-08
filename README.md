@@ -25,7 +25,7 @@ gem install mdss
 ```bash
 # SIMPLE USAGE
 Usage: mdss [options]
-    -i, --init site                  Create a new simple static site with GFM
-    -h, --help                       Display help menu
+    -i, --init <NAME>                Create a new simple static site with GFM
     -l, --launch                     Compile and upload to the big wide world
+    -h, --help                       Display help menu
 ```

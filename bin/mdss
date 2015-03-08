@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'optparse'
 
-options = {:name => nil}
+options = {:name => nil, :launch => false}
 
 parser = OptionParser.new do |opts|
     opts.banner = "Usage: mdss [options]"
@@ -11,6 +11,7 @@ parser = OptionParser.new do |opts|
     end
 
     opts.on("-l", "--launch", "Compile and upload to the big wide world") do
+        options[:launch] = true
         puts "Unsupported behavior! Terminating!"
         exit
     end

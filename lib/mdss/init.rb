@@ -1,8 +1,8 @@
-require 'extra'
+require_relative 'extra'
 
 class MDSSInit
     def self.mdss_init(name)
-        MDSSExtra.puts_err("Directory exists") if File.exists?(name)
+        MDSSExtra.new.puts_err("Directory exists") if File.exists?(name)
         
         Dir.mkdir(name)
 

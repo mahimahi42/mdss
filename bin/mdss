@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 require 'optparse'
+require 'mdss'
 
 options = {:name => nil, :launch => false}
+mdss_helper = MDSS.get_extra
 
 parser = OptionParser.new do |opts|
     opts.banner = "Usage: mdss [options]"
@@ -12,7 +14,6 @@ parser = OptionParser.new do |opts|
 
     opts.on("-l", "--launch", "Compile and upload to the big wide world") do
         options[:launch] = true
-        puts "Unsupported behavior! Terminating!"
         exit
     end
 
@@ -22,9 +23,13 @@ parser = OptionParser.new do |opts|
     end
 end
 
-parser.parse!
+begin parser.parse!
+rescue OptionParser::MissingArgument => e
+    mdss_helper.puts_err("Missing site name")
+end
 
-if options[:name].nil?
-    puts "Whelp, no name"
-    exit
+if options[:launch]
+    mdss_helper.puts_err("Unsupported behavior")
+else
+    MDSS.mdss_init options[:name]
 end

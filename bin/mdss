@@ -1,35 +1,64 @@
 #!/usr/bin/env ruby
+# To parse command line args
 require 'optparse'
+# MDSS code
 require 'mdss'
 
-options = {:name => nil, :launch => false}
-mdss_helper = MDSS.get_extra
+=begin rdoc
+Wrapper class around the CLI functionality of MDSS.
+=end
+class MDSSCLI
+=begin rdoc
+call-seq:
+    MDSSCLI.start => nil
 
-parser = OptionParser.new do |opts|
-    opts.banner = "Usage: mdss [options]"
+Start the MDSS CLI. The arguments provided are parsed using the OptionParser class.
+=end
+    def self.start
+        # Define our option parameters. We need the name of the site, or if we are
+        # launching the site to a server
+        options = {:name => nil, :launch => false}
+        # Some helper functions
+        mdss_helper = MDSS.get_extra
 
-    opts.on("-i", "--init <NAME>", "Create a new simple static site with GFM") do |name|
-        options[:name] = name
-    end
+        # Define our various options
+        parser = OptionParser.new do |opts|
+            opts.banner = "Usage: mdss [options]"
 
-    opts.on("-l", "--launch", "Compile and upload to the big wide world") do
-        options[:launch] = true
-        exit
-    end
+            # Initialize a new site
+            opts.on("-i", "--init <NAME>", "Create a new simple static site with GFM") do |name|
+                options[:name] = name
+            end
 
-    opts.on("-h", "--help", "Display help menu") do
-        puts opts
-        exit
+            # Launching an existing site to a server
+            opts.on("-l", "--launch", "Compile and upload to the big wide world") do
+                options[:launch] = true
+                exit
+            end
+
+            # Display the help menu
+            opts.on("-h", "--help", "Display help menu") do
+                puts opts
+                exit
+            end
+        end
+
+        # Parse the arguments, catching any errors
+        begin parser.parse!
+        rescue OptionParser::MissingArgument => e
+            mdss_helper.puts_err("Missing site name")
+        end
+
+        # Looks like we're launching to a server
+        if options[:launch]
+            mdss_helper.puts_err("Unsupported behavior")
+        # Looks like we're making a new site
+        else
+            # Pass the site name to the initalizer function
+            MDSS.mdss_init options[:name]
+        end
     end
 end
 
-begin parser.parse!
-rescue OptionParser::MissingArgument => e
-    mdss_helper.puts_err("Missing site name")
-end
-
-if options[:launch]
-    mdss_helper.puts_err("Unsupported behavior")
-else
-    MDSS.mdss_init options[:name]
-end
+# Start the CLI
+MDSSCLI.start

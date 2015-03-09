@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
     s.name        = 'mdss'
-    s.version     = '0.0.4'
+    s.version     = '0.0.5'
     s.executables << 'mdss'
     s.date        = '2015-03-08'
     s.summary     = "Simple static sites with Markdown"

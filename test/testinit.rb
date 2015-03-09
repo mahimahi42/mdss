@@ -29,4 +29,18 @@ class TestMDSSInit < Test::Unit::TestCase
         assert_equal("test1", str1, "Contents not written")
         assert_equal("test2", str2, "Contents not continued")
     end
+
+    def test_init_dir
+        MDSSInit.init_dir(@name, "img", "Image")
+        filename = "#{@name}/img"
+        assert(File.exists?(filename), "Directory not created")
+    end
+
+    def test_init_dir_with_contents
+        MDSSInit.init_dir(@name, "css", "CSS", "styles.css")
+        filename = "#{@name}/css"
+        assert(File.exists?(filename), "Directory not created")
+        assert(File.exists?("#{filename}/styles.css"), 
+                            "Directory contents not created")
+    end
 end
